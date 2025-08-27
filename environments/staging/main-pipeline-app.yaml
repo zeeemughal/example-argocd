@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/zeeemughal/example-argocd.git
     targetRevision: HEAD
-    path: environments/staging/main-pipeline
+    path: environments/staging
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

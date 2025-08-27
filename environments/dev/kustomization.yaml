@@ -8,6 +8,7 @@ resources:
   - charts/cluster-issuer/pipeline/application.yaml
   - charts/external-secrets/pipeline/application.yaml
   - charts/external-dns/pipeline/application.yaml
+  - charts/cloudflare-tunnel-ingress-controller/pipeline/application.yaml
   
   # ArgoCD self-management (Wave 2)
   - charts/argocd/pipeline/application.yaml

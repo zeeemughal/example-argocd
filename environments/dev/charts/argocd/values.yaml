@@ -15,7 +15,7 @@ argo-cd:
     ingress:
       enabled: true
       ingressClassName: cloudflare-tunnel
-      hostname: argocd-dev.786999.xyz
+      hostname: argocd-k3s.786999.xyz
       # annotations:
       #   nginx.ingress.kubernetes.io/ssl-redirect: "true"
       #   nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

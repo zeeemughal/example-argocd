@@ -1,12 +1,16 @@
 # External DNS configuration for dev environment
+
+# Provider configuration
 provider:
   name: cloudflare
-  env:
-    - name: CF_API_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: external-dns-credentials
-          key: CF_API_TOKEN
+
+# Environment variables for the external-dns container
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-credentials
+        key: CF_API_TOKEN
 
 # Domains that ExternalDNS will manage
 domainFilters:
@@ -24,6 +28,6 @@ policy: upsert-only
 registry: txt
 txtOwnerId: external-dns-dev
 
-# Cloudflare specific settings
-cloudflare:
-  proxied: false
+# Cloudflare specific settings via extra args
+extraArgs:
+  - --cloudflare-proxied=false

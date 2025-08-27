@@ -4,7 +4,7 @@ argo-cd:
   
   configs:
     params:
-      server.insecure: false
+      server.insecure: true
     cm:
       url: https://argocd.dev.ithut.net
       application.instanceLabelKey: argocd.argoproj.io/instance

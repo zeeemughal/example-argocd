@@ -2,20 +2,23 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Provider configuration
+# The DNS provider where the DNS records will be created (cloudflare, aws, google, etc.)
 provider: cloudflare
 
-# Cloudflare configuration
+# Cloudflare specific configuration
 cloudflare:
-  proxied: false  # Set to true if you want to use Cloudflare's proxy
-  apiTokenSecretRef:  # Reference to the secret containing Cloudflare API token
+  # Set to true to enable the proxy feature of Cloudflare
+  proxied: false
+  
+  # API token for Cloudflare authentication (stored in a Kubernetes secret)
+  apiTokenSecretRef:
     name: external-dns-credentials
     key: CF_API_TOKEN
 
-# Domain filters - specify the domains you want to manage
+# List of domains that ExternalDNS will be able to create records for
 domainFilters:
-  - "786999.xyz"
-  - "dev.ithut.net"
+  - 786999.xyz
+  - dev.ithut.net
 
 # Sources to watch for DNS records
 sources:
@@ -24,82 +27,62 @@ sources:
   - ingress-class
   - crd
 
-# Policy for managing DNS records
+# Policy for managing DNS records (sync, upsert-only)
 policy: upsert-only
 
 # Registry configuration (how ExternalDNS tracks ownership)
 registry: txt
 
+# Owner ID for the TXT records (must be unique for each ExternalDNS instance)
 txtOwnerId: external-dns
 
-txtPrefix: external-dns-  # Prefix for TXT records
+# Prefix for TXT records
+txtPrefix: "external-dns-"
 
-# Log level
-logLevel: debug  # Temporarily set to debug for troubleshooting
+# Log level (debug, info, warning, error, fatal, panic)
+logLevel: debug
 
 # Deployment configuration
 replicaCount: 1
 
+# Image configuration
 image:
   repository: registry.k8s.io/external-dns/external-dns
+  tag: "v0.14.2"
   pullPolicy: IfNotPresent
-  
-  # Resource limits
-  resources:
-    limits:
-      cpu: 50m
-      memory: 50Mi
-    requests:
-      cpu: 10m
-      memory: 50Mi
-  
-  # Security context
-  securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 65534
-    capabilities:
-      drop:
-        - ALL
-  
-  # Service account
-  serviceAccount:
-    create: true
-    annotations: {}
-    name: ""
-  
-  # RBAC
-  rbac:
-    create: true
-  
-  # Logging
-  logLevel: info
-  logFormat: text
-  
-  # Sync policy
-  policy: upsert-only  # Options: sync, upsert-only
-  
-  # Registry for storing DNS records state
-  registry: txt
-  txtOwnerId: "external-dns-dev"
-  
-  # Interval between DNS updates
-  interval: 1m
-  
-  # Trigger loop on events in addition to interval
-  triggerLoopOnEvent: false
-  
-  # Metrics
-  metrics:
-    enabled: true
-    port: 7979
-  
-  # Extra environment variables (for provider-specific config)
-  env:
-    # Cloudflare configuration using API token
-    - name: CF_API_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: external-dns-credentials
-          key: CF_API_TOKEN
+
+# Security context for the container
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 100m
+    memory: 50Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi
+
+# Service account configuration
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # Annotations to add to the service account
+  annotations: {}
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels: {}

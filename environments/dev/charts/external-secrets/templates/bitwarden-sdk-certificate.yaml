@@ -1,0 +1,20 @@
+# Certificate for Bitwarden SDK Server
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bitwarden-sdk-server-cert
+spec:
+  secretName: bitwarden-sdk-server-tls
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: bitwarden-sdk-server.external-secrets-system.svc.cluster.local
+  dnsNames:
+  - bitwarden-sdk-server
+  - bitwarden-sdk-server.external-secrets-system
+  - bitwarden-sdk-server.external-secrets-system.svc
+  - bitwarden-sdk-server.external-secrets-system.svc.cluster.local
+  - localhost
+  ipAddresses:
+  - 127.0.0.1

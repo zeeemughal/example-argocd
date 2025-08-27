@@ -54,3 +54,37 @@ external-secrets:
       requests:
         cpu: 10m
         memory: 32Mi
+
+  # Enable Bitwarden SDK Server for Bitwarden Secrets Manager provider
+  bitwarden-sdk-server:
+    enabled: true
+    
+    # Configure TLS certificate
+    tls:
+      enabled: true
+      secretName: bitwarden-sdk-server-tls
+    
+    # Service configuration
+    service:
+      type: ClusterIP
+      port: 9998
+      
+    # Pod configuration
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 65534
+      
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi

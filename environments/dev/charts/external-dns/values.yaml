@@ -1,88 +1,29 @@
-# Default values for external-dns.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# External DNS configuration for dev environment
+provider:
+  name: cloudflare
+  env:
+    - name: CF_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-credentials
+          key: CF_API_TOKEN
 
-# The DNS provider where the DNS records will be created (cloudflare, aws, google, etc.)
-provider: cloudflare
-
-# Cloudflare specific configuration
-cloudflare:
-  # Set to true to enable the proxy feature of Cloudflare
-  proxied: false
-  
-  # API token for Cloudflare authentication (stored in a Kubernetes secret)
-  apiTokenSecretRef:
-    name: external-dns-credentials
-    key: CF_API_TOKEN
-
-# List of domains that ExternalDNS will be able to create records for
+# Domains that ExternalDNS will manage
 domainFilters:
   - 786999.xyz
-  - dev.ithut.net
 
 # Sources to watch for DNS records
 sources:
   - service
   - ingress
-  - ingress-class
-  - crd
 
-# Policy for managing DNS records (sync, upsert-only)
+# Policy for managing DNS records
 policy: upsert-only
 
-# Registry configuration (how ExternalDNS tracks ownership)
+# Registry for tracking ownership
 registry: txt
+txtOwnerId: external-dns-dev
 
-# Owner ID for the TXT records (must be unique for each ExternalDNS instance)
-txtOwnerId: external-dns
-
-# Prefix for TXT records
-txtPrefix: "external-dns-"
-
-# Log level (debug, info, warning, error, fatal, panic)
-logLevel: debug
-
-# Deployment configuration
-replicaCount: 1
-
-# Image configuration
-image:
-  repository: registry.k8s.io/external-dns/external-dns
-  tag: "v0.14.2"
-  pullPolicy: IfNotPresent
-
-# Security context for the container
-securityContext:
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-
-# Resource limits and requests
-resources:
-  limits:
-    cpu: 100m
-    memory: 50Mi
-  requests:
-    cpu: 10m
-    memory: 50Mi
-
-# Service account configuration
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-  # Annotations to add to the service account
-  annotations: {}
-
-# Pod annotations
-podAnnotations: {}
-
-# Pod labels
-podLabels: {}
+# Cloudflare specific settings
+cloudflare:
+  proxied: false

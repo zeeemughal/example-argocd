@@ -5,12 +5,12 @@ provider:
   name: cloudflare
 
 # Environment variables for the external-dns container
-env:
-  - name: CF_API_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: external-dns-credentials
-        key: CF_API_TOKEN
+  env:
+    - name: CF_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-credentials
+          key: CF_API_TOKEN
 
 # Domains that ExternalDNS will manage
 domainFilters:

@@ -23,15 +23,15 @@ labels:
       environment: dev
       managed-by: argocd
 
-patchesStrategicMerge:
-  - |-
-    apiVersion: argoproj.io/v1alpha1
-    kind: Application
-    metadata:
-      name: not-used
-    spec:
-      syncPolicy:
-        retry:
+patches:
+  - target:
+      kind: Application
+      group: argoproj.io
+      version: v1alpha1
+    patch: |-
+      - op: add
+        path: /spec/syncPolicy/retry
+        value:
           limit: 5
           backoff:
             duration: 5s

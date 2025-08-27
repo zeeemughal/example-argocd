@@ -72,13 +72,14 @@ external-dns:
   
   # Extra environment variables (for provider-specific config)
   env:
-    # Example for Cloudflare
-    # - name: CF_API_TOKEN
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: cloudflare-api-token
-    #       key: token
-    
-    # Example for AWS Route53
-    # - name: AWS_DEFAULT_REGION
-    #   value: "us-east-1"
+    # Cloudflare configuration
+    - name: CF_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-credentials
+          key: CLOUDFLARE_API_KEY
+    - name: CF_API_EMAIL
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-credentials
+          key: CLOUDFLARE_EMAIL

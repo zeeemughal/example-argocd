@@ -73,7 +73,7 @@ metadata:
   name: my-app
 spec:
   source:
-    repoURL: https://github.com/my-org/my-repo.git
+    repoURL: https://github.com/zeeemughal/example-argocd.git
     path: apps/my-app
   destination:
     server: https://kubernetes.default.svc
@@ -439,7 +439,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "3"
 spec:
   source:
-    repoURL: https://github.com/your-org/argocd-bootstrap.git
+    repoURL: https://github.com/zeeemughal/example-argocd.git
     path: environments/dev/charts/prometheus
   destination:
     server: https://kubernetes.default.svc

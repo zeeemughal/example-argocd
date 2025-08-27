@@ -14,7 +14,7 @@ First, install ArgoCD using the bootstrap configuration:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/argocd-bootstrap.git
+git clone https://github.com/zeeemughal/example-argocd.git
 cd argocd-bootstrap
 
 # Install ArgoCD

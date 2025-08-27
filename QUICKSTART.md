@@ -96,7 +96,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ## Next Steps
 
 1. **New to ArgoCD?** Read the [ArgoCD Beginner's Guide](docs/argocd-beginner-guide.md) first
-2. **Update Repository URLs**: Replace `https://github.com/your-org/argocd-bootstrap.git` in all application.yaml files
+2. **Update Repository URLs**: Replace `https://github.com/zeeemughal/example-argocd.git` in all application.yaml files
 3. **Customize Domains**: Update domain names in ArgoCD values.yaml files
 4. **Add Applications**: Follow [docs/adding-applications.md](docs/adding-applications.md)
 5. **Deploy Other Environments**: Apply staging/prod when ready

@@ -104,7 +104,7 @@ argocd-bootstrap/
 
 ### 🎯 Next Steps
 
-1. **Update Git URLs**: Replace `https://github.com/your-org/argocd-bootstrap.git` in all application.yaml files
+1. **Update Git URLs**: Replace `https://github.com/zeeemughal/example-argocd.git` in all application.yaml files
 2. **DNS Setup**: Point your domains to the ingress controller
 3. **Deploy**: Follow the QUICKSTART guide
 4. **Test**: Verify all applications are accessible via HTTPS

@@ -1,0 +1,65 @@
+# Helm
+charts/*/charts/
+charts/*/Chart.lock
+Chart.lock
+*.tgz
+
+# Kustomize
+kustomization.yaml.bak
+
+# Kubernetes
+*.kubeconfig
+kubeconfig*
+
+# Secrets and sensitive files
+*.key
+*.crt
+*.pem
+secrets/
+.env
+.env.*
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# ArgoCD specific
+argocd-*-server-*
+argocd-*-repo-server-*
+argocd-*-application-controller-*
+
+# Terraform (if used)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Local development
+local/
+dev-local/

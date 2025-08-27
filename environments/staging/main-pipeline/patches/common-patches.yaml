@@ -1,0 +1,11 @@
+- op: add
+  path: /metadata/labels/environment
+  value: staging
+- op: add
+  path: /spec/syncPolicy/retry
+  value:
+    limit: 5
+    backoff:
+      duration: 5s
+      factor: 2
+      maxDuration: 3m

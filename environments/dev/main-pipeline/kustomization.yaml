@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # Infrastructure applications (Wave 1)
+  - ../charts/cert-manager/pipeline/application.yaml
+  - ../charts/nginx-ingress/pipeline/application.yaml
+  - ../charts/cluster-issuer/pipeline/application.yaml
+  
+  # ArgoCD self-management (Wave 2)
+  - ../charts/argocd/pipeline/application.yaml
+  
+  # Application deployments (Wave 3+)
+  - ../deployments/echo-app/pipeline/application.yaml
+
+commonLabels:
+  environment: dev
+  managed-by: argocd
+
+patches:
+  - path: patches/common-patches.yaml
+    target:
+      kind: Application

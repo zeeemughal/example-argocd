@@ -1,0 +1,15 @@
+letsencrypt:
+  email: admin@ithut.net
+  environment: dev
+  
+  # Development uses Let's Encrypt staging for testing
+  staging:
+    enabled: true
+    name: letsencrypt-dev
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+  
+  # Production issuer (disabled in dev)
+  prod:
+    enabled: false
+    name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory

@@ -1,0 +1,52 @@
+argo-cd:
+  global:
+    domain: argocd.dev.ithut.net
+  
+  configs:
+    params:
+      server.insecure: false
+    cm:
+      url: https://argocd.dev.ithut.net
+      application.instanceLabelKey: argocd.argoproj.io/instance
+    
+  server:
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      hostname: argocd.dev.ithut.net
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        cert-manager.io/cluster-issuer: "letsencrypt-dev"
+      tls: true
+      
+  controller:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    
+  repoServer:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    
+  applicationSet:
+    enabled: true
+    
+  notifications:
+    enabled: false
+    
+  dex:
+    enabled: false

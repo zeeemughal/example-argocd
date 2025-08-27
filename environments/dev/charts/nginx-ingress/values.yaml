@@ -1,0 +1,35 @@
+ingress-nginx:
+  controller:
+    replicaCount: 1
+    
+    service:
+      type: LoadBalancer
+      # For development, you might want NodePort instead
+      # type: NodePort
+    
+    resources:
+      requests:
+        cpu: 100m
+        memory: 90Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    
+    config:
+      use-forwarded-headers: "true"
+      compute-full-forwarded-for: "true"
+      use-proxy-protocol: "false"
+    
+    metrics:
+      enabled: true
+      service:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "10254"
+    
+    admissionWebhooks:
+      enabled: true
+      
+  defaultBackend:
+    enabled: true
+    replicaCount: 1

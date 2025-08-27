@@ -1,0 +1,36 @@
+cert-manager:
+  installCRDs: true
+  
+  global:
+    leaderElection:
+      namespace: cert-manager
+  
+  replicaCount: 1
+  
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+  
+  webhook:
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 5m
+        memory: 16Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi
+  
+  cainjector:
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 5m
+        memory: 16Mi
+      limits:
+        cpu: 50m
+        memory: 64Mi

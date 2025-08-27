@@ -62,7 +62,7 @@ external-secrets:
     # Configure TLS certificate
     tls:
       enabled: true
-      secretName: bitwarden-sdk-server-tls
+      secretName: bitwarden-tls-certs
     
     # Service configuration
     service:

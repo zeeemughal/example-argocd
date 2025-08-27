@@ -4,7 +4,7 @@ kind: Certificate
 metadata:
   name: bitwarden-sdk-server-cert
 spec:
-  secretName: bitwarden-sdk-server-tls
+  secretName: bitwarden-tls-certs
   issuerRef:
     name: selfsigned-cluster-issuer
     kind: ClusterIssuer

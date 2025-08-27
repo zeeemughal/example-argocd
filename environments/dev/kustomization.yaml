@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # Infrastructure applications (Wave 1)
+  - charts/cert-manager/pipeline/application.yaml
+  - charts/nginx-ingress/pipeline/application.yaml
+  - charts/cluster-issuer/pipeline/application.yaml
+  - charts/external-secrets/pipeline/application.yaml
+  - charts/external-dns/pipeline/application.yaml
+  
+  # ArgoCD self-management (Wave 2)
+  - charts/argocd/pipeline/application.yaml
+  
+  # Application deployments (Wave 3+)
+  - deployments/echo-app/pipeline/application.yaml
+  
+  # Main pipeline self-reference
+  - main-pipeline-app.yaml
+
+labels:
+  - pairs:
+      environment: dev
+      managed-by: argocd
+
+patchesStrategicMerge:
+  - |-
+    apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: not-used
+    spec:
+      syncPolicy:
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m

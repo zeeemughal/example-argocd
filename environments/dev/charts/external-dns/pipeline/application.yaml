@@ -34,3 +34,6 @@ spec:
     kind: ExternalSecret
     jsonPointers:
     - /status
+    - /metadata/resourceVersion
+    - /metadata/generation
+    - /metadata/managedFields

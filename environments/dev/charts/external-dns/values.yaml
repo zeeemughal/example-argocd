@@ -4,30 +4,9 @@
 provider:
   name: cloudflare
 
-# Environment variables for the external-dns container
-  env:
-    - name: CF_API_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: external-dns-credentials
-          key: CF_API_TOKEN
-
-# Domains that ExternalDNS will manage
-domainFilters:
-  - 786999.xyz
-
-# Sources to watch for DNS records
-sources:
-  - service
-  - ingress
-
-# Policy for managing DNS records
-policy: upsert-only
-
-# Registry for tracking ownership
-registry: txt
-txtOwnerId: external-dns-dev
-
-# Cloudflare specific settings via extra args
-extraArgs:
-  - --cloudflare-proxied=false
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-credentials
+        key: CF_API_TOKEN

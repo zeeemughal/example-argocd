@@ -1,23 +1,31 @@
-external-dns:
-  # Provider configuration - adjust based on your DNS provider
-  provider: cloudflare  # Change to your DNS provider (aws, azure, gcp, cloudflare, etc.)
-  
-  # Domain filters - specify your domains
-  domainFilters:
-    - "dev.example.com"  # Replace with your actual domain
-  
-  # Sources to watch for DNS records
-  sources:
-    - service
-    - ingress
-  
-  # Deployment configuration
-  replicaCount: 1
-  
-  image:
-    repository: registry.k8s.io/external-dns/external-dns
-    tag: v0.14.2
-    pullPolicy: IfNotPresent
+# Default values for external-dns.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Provider configuration - adjust based on your DNS provider
+provider: cloudflare
+
+cloudflare:
+  proxied: false  # Set to true if you want to use Cloudflare's proxy
+
+# Domain filters - specify the domains you want to manage
+domainFilters:
+  - "786999.xyz"
+  - "dev.ithut.net"
+
+# Sources to watch for DNS records
+sources:
+  - service
+  - ingress
+  - ingress-class
+  - crd
+
+# Deployment configuration
+replicaCount: 1
+
+image:
+  repository: registry.k8s.io/external-dns/external-dns
+  pullPolicy: IfNotPresent
   
   # Resource limits
   resources:

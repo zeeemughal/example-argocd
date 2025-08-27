@@ -1,12 +1,10 @@
-# External DNS configuration for dev environment
+external-dns:
+  provider:
+    name: cloudflare
 
-# Provider configuration
-provider:
-  name: cloudflare
-
-env:
-  - name: CF_API_TOKEN
-    valueFrom:
-      secretKeyRef:
-        name: external-dns-credentials
-        key: CF_API_TOKEN
+  env:
+    - name: CF_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: external-dns-credentials
+          key: CF_API_TOKEN

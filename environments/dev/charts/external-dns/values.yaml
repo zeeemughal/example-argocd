@@ -77,9 +77,9 @@ external-dns:
       valueFrom:
         secretKeyRef:
           name: external-dns-credentials
-          key: CLOUDFLARE_API_KEY
+          key: CF_API_KEY
     - name: CF_API_EMAIL
       valueFrom:
         secretKeyRef:
           name: external-dns-credentials
-          key: CLOUDFLARE_EMAIL
+          key: CF_API_EMAIL

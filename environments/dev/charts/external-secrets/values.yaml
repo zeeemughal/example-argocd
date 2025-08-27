@@ -1,0 +1,56 @@
+external-secrets:
+  installCRDs: true
+  
+  replicaCount: 1
+  
+  image:
+    repository: ghcr.io/external-secrets/external-secrets
+    pullPolicy: IfNotPresent
+    tag: ""
+  
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 32Mi
+  
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+  
+  serviceMonitor:
+    enabled: false
+  
+  webhook:
+    create: true
+    certCheckInterval: "5m"
+    lookaheadInterval: "30s"
+    replicaCount: 1
+    
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
+  
+  certController:
+    create: true
+    requeueInterval: "5m"
+    replicaCount: 1
+    
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi

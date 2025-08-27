@@ -1,0 +1,84 @@
+external-dns:
+  # Provider configuration - adjust based on your DNS provider
+  provider: cloudflare  # Change to your DNS provider (aws, azure, gcp, cloudflare, etc.)
+  
+  # Domain filters - specify your domains
+  domainFilters:
+    - "dev.example.com"  # Replace with your actual domain
+  
+  # Sources to watch for DNS records
+  sources:
+    - service
+    - ingress
+  
+  # Deployment configuration
+  replicaCount: 1
+  
+  image:
+    repository: registry.k8s.io/external-dns/external-dns
+    tag: v0.14.2
+    pullPolicy: IfNotPresent
+  
+  # Resource limits
+  resources:
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+  
+  # Security context
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    capabilities:
+      drop:
+        - ALL
+  
+  # Service account
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  
+  # RBAC
+  rbac:
+    create: true
+  
+  # Logging
+  logLevel: info
+  logFormat: text
+  
+  # Sync policy
+  policy: upsert-only  # Options: sync, upsert-only
+  
+  # Registry for storing DNS records state
+  registry: txt
+  txtOwnerId: "external-dns-dev"
+  
+  # Interval between DNS updates
+  interval: 1m
+  
+  # Trigger loop on events in addition to interval
+  triggerLoopOnEvent: false
+  
+  # Metrics
+  metrics:
+    enabled: true
+    port: 7979
+  
+  # Extra environment variables (for provider-specific config)
+  env:
+    # Example for Cloudflare
+    # - name: CF_API_TOKEN
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: cloudflare-api-token
+    #       key: token
+    
+    # Example for AWS Route53
+    # - name: AWS_DEFAULT_REGION
+    #   value: "us-east-1"

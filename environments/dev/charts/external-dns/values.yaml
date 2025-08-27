@@ -72,14 +72,9 @@ external-dns:
   
   # Extra environment variables (for provider-specific config)
   env:
-    # Cloudflare configuration
-    - name: CF_API_KEY
+    # Cloudflare configuration using API token
+    - name: CF_API_TOKEN
       valueFrom:
         secretKeyRef:
           name: external-dns-credentials
-          key: CF_API_KEY
-    - name: CF_API_EMAIL
-      valueFrom:
-        secretKeyRef:
-          name: external-dns-credentials
-          key: CF_API_EMAIL
+          key: CF_API_TOKEN

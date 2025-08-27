@@ -2,11 +2,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Provider configuration - adjust based on your DNS provider
+# Provider configuration
 provider: cloudflare
 
+# Cloudflare configuration
 cloudflare:
   proxied: false  # Set to true if you want to use Cloudflare's proxy
+  apiTokenSecretRef:  # Reference to the secret containing Cloudflare API token
+    name: external-dns-credentials
+    key: CF_API_TOKEN
 
 # Domain filters - specify the domains you want to manage
 domainFilters:
@@ -19,6 +23,19 @@ sources:
   - ingress
   - ingress-class
   - crd
+
+# Policy for managing DNS records
+policy: upsert-only
+
+# Registry configuration (how ExternalDNS tracks ownership)
+registry: txt
+
+txtOwnerId: external-dns
+
+txtPrefix: external-dns-  # Prefix for TXT records
+
+# Log level
+logLevel: debug  # Temporarily set to debug for troubleshooting
 
 # Deployment configuration
 replicaCount: 1

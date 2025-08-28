@@ -9,7 +9,23 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: 7.6.8
+    version: 8.3.0
     releaseName: argocd
     namespace: argocd
-    valuesFile: values.yaml
+    valuesInline:
+      configs:
+        params:
+          server.insecure: true
+      server:
+        service:
+          type: ClusterIP
+        ingress:
+          enabled: false
+      controller:
+        replicas: 1
+      repoServer:
+        replicas: 1
+      applicationSet:
+        enabled: true
+      notifications:
+        enabled: false

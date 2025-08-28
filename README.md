@@ -50,6 +50,9 @@ argocd-bootstrap/
 ```bash
 # Apply initial ArgoCD installation
 kubectl apply -k bootstrap/argocd/
+
+# If the above doesn't work (Helm charts not supported), use:
+kustomize build bootstrap/argocd/ --enable-helm | kubectl apply -f -
 ```
 
 ### 2. Deploy Root Pipeline (App-of-Apps Pattern)

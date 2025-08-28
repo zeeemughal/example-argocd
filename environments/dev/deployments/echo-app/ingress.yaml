@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
-  - host: echo-dev.786999.xyz
+  - host: dev-echo.786999.xyz
     http:
       paths:
       - path: /

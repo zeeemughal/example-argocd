@@ -14,8 +14,8 @@ argo-cd:
       type: ClusterIP
     ingress:
       enabled: true
-      # ingressClassName: cloudflare-tunnel
-      hostname: dev-argocd.786999.xyz
+      ingressClassName: nginx
+      hostname: argocd.dev.786999.xyz
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
         nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

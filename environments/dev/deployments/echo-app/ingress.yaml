@@ -7,9 +7,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-dev"
 spec:
-  ingressClassName: cloudflare-tunnel
+  ingressClassName: nginx
   rules:
-  - host: dev-echo.786999.xyz
+  - host: echo.dev.786999.xyz
     http:
       paths:
       - path: /
@@ -21,6 +21,6 @@ spec:
               number: 80
   tls:
     - hosts:
-      - dev-echo.786999.xyz
+      - echo.dev.786999.xyz
       secretName: echo-app-tls
     

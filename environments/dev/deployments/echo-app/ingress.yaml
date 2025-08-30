@@ -4,8 +4,8 @@ metadata:
   name: echo-app
   namespace: echo-app
   annotations:
-    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    # cert-manager.io/cluster-issuer: "letsencrypt-dev"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-dev"
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
@@ -19,3 +19,8 @@ spec:
             name: echo-app
             port:
               number: 80
+  tls:
+    - hosts:
+      - dev-echo.786999.xyz
+      secretName: echo-app-tls
+    

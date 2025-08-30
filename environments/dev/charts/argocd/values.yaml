@@ -14,17 +14,17 @@ argo-cd:
       type: ClusterIP
     ingress:
       enabled: true
-      ingressClassName: cloudflare-tunnel
+      # ingressClassName: cloudflare-tunnel
       hostname: dev-argocd.786999.xyz
-      # annotations:
-      #   nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      #   nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-      #   cert-manager.io/cluster-issuer: "letsencrypt-dev"
-      #   # External DNS annotations
-      #   external-dns.alpha.kubernetes.io/hostname: "argocd-dev.786999.xyz"
-      #   external-dns.alpha.kubernetes.io/ttl: "60"
-      #   external-dns.alpha.kubernetes.io/ip-address: "10.51.1.251"
-      tls: false
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        cert-manager.io/cluster-issuer: "letsencrypt-dev"
+        # External DNS annotations
+        external-dns.alpha.kubernetes.io/hostname: "argocd-dev.786999.xyz"
+        external-dns.alpha.kubernetes.io/ttl: "60"
+        external-dns.alpha.kubernetes.io/ip-address: "51.89.191.218"
+      tls: true
       
   controller:
     replicas: 1

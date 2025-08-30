@@ -7,6 +7,7 @@ external-dns:
   
   extraArgs:
     annotation-filter: "external-dns.alpha.kubernetes.io/hostname"
+    ingress-hostname-source: "annotation-only"
 
   env:
     - name: CF_API_TOKEN

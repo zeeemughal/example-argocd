@@ -15,21 +15,6 @@ ingress-nginx:
         cpu: 200m
         memory: 256Mi
     
-    config:
-      use-forwarded-headers: "true"
-      compute-full-forwarded-for: "true"
-      use-proxy-protocol: "false"
-    
-    metrics:
-      enabled: true
-      service:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/port: "10254"
-    
     admissionWebhooks:
       enabled: false
-      
-  defaultBackend:
-    enabled: true
-    replicaCount: 1
+

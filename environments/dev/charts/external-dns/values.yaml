@@ -6,7 +6,7 @@ external-dns:
   policy: upsert-only
   # logLevel: debug
   extraArgs:
-    annotation-filter: "external-dns.alpha.kubernetes.io/hostname"   
+    annotation-filter: "external-dns.alpha.kubernetes.io/enabled=true"   
   env:
     - name: CF_API_TOKEN
       valueFrom:

@@ -17,7 +17,7 @@ resources:
   # Application deployments (Wave 3+)
   - deployments/echo-app/pipeline/application.yaml
   - deployments/echo-app-nginx/pipeline/application.yaml
-  - charts/minio/pipeline/application.yaml
+  - deployments/external-secret-test/pipeline/application.yaml
   
   # Main pipeline self-reference
   - main-pipeline-app.yaml

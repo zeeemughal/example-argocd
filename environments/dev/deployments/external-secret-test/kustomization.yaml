@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: external-secret-test
+
+resources:
+  - namespace.yaml
+  - json-extract-secret.yaml
+  - json-keys-secret.yaml
+
+commonLabels:
+  app: external-secret-test
+  environment: dev

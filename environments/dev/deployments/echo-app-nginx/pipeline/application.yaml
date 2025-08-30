@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: echo-app-dev
+  name: echo-app-nginx-dev
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "3"
@@ -10,10 +10,10 @@ spec:
   source:
     repoURL: https://github.com/zeeemughal/example-argocd.git
     targetRevision: HEAD
-    path: environments/dev/deployments/echo-app
+    path: environments/dev/deployments/echo-app-nginx
   destination:
     server: https://kubernetes.default.svc
-    namespace: echo-app
+    namespace: echo-app-nginx
   syncPolicy:
     automated:
       prune: true

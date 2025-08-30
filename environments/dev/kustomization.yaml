@@ -16,6 +16,7 @@ resources:
   
   # Application deployments (Wave 3+)
   #- deployments/echo-app/pipeline/application.yaml
+  - deployments/echo-app-nginx/pipeline/application.yaml
   
   # Main pipeline self-reference
   - main-pipeline-app.yaml

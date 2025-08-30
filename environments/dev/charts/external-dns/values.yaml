@@ -2,6 +2,9 @@ external-dns:
   provider:
     name: cloudflare
 
+  txtOwnerId: k8s-dev-cluster
+  policy: sync
+
   env:
     - name: CF_API_TOKEN
       valueFrom:

@@ -14,7 +14,7 @@ metadata:
 
 
 spec:
-  ingressClassName: cloudflare-tunnel
+  ingressClassName: nginx
   rules:
   - host: test.dev.786999.xyz
     http:

@@ -4,6 +4,8 @@ external-dns:
 
   txtOwnerId: k8s-dev-cluster
   policy: sync
+  
+  annotationFilter: "external-dns.alpha.kubernetes.io/hostname"
 
   env:
     - name: CF_API_TOKEN

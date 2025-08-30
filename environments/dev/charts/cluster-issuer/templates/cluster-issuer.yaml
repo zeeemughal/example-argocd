@@ -13,6 +13,7 @@ spec:
     - http01:
         ingress:
           ingressClassName: nginx
+          disableSelfCheck: true
 {{- end }}
 
 ---
@@ -31,4 +32,5 @@ spec:
     - http01:
         ingress:
           ingressClassName: nginx
+          disableSelfCheck: true
 {{- end }}

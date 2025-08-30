@@ -9,7 +9,7 @@ argo-cd:
     service:
       type: ClusterIP
     ingress:
-      enabled: true
+      enabled: false
       ingressClassName: nginx
       hostname: argocd.dev.786999.xyz
       annotations:

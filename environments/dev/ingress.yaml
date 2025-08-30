@@ -1,9 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: echo-app
-  namespace: echo-app
-  # annotations:
+  name: argocd-server
+  namespace: argocd
+  annotations:
+    cloudflare-tunnel-ingress-controller.strrl.dev/backend-protocol: "https"
+    cloudflare-tunnel-ingress-controller.strrl.dev/proxy-ssl-verify: "off"
     # nginx.ingress.kubernetes.io/ssl-redirect: "false"
     # cert-manager.io/cluster-issuer: "letsencrypt-dev"
     # external-dns.alpha.kubernetes.io/target: "51.89.191.218"
@@ -16,18 +18,18 @@ metadata:
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
-  - host: tunnel-dev.786999.xyz
+  - host: argocd-dev.786999.xyz
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: echo-app
+            name: argocd-dev-server
             port:
-              number: 80
-  # tls:
-  #   - hosts:
-  #     - testing.dev.786999.xyz
+              number: 443
+  tls:
+    - hosts:
+      - testing.dev.786999.xyz
   #     secretName: test-tls-lets
     

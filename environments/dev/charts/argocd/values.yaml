@@ -1,27 +1,24 @@
-# argo-cd:
+argo-cd:
   # configs:
   #   params:
   #     server.insecure: true
   #   cm:
   #     application.instanceLabelKey: argocd.argoproj.io/instance
     
-  # server:
-  #   service:
-  #     type: ClusterIP
-  #   ingress:
-  #     enabled: false
-  #     ingressClassName: nginx
-  #     hostname: argocd.dev.786999.xyz
-  #     annotations:
-  #       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  #       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-  #       cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
-  #       # External DNS annotations
-  #       external-dns.alpha.kubernetes.io/hostname: "argocd.dev.786999.xyz"
-  #       external-dns.alpha.kubernetes.io/ttl: "60"
-  #       external-dns.alpha.kubernetes.io/ip-address: "51.89.191.218"
-  #     tls: true
-      
+  server:
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      ingressClassName: cloudflare-tunnel
+      hostname: argocd-dev.786999.xyz
+      annotations:
+        cloudflare-tunnel-ingress-controller.strrl.dev/backend-protocol: "https"
+        cloudflare-tunnel-ingress-controller.strrl.dev/proxy-ssl-verify: "off"
+        # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        # cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+        # External DNS annotations
   # controller:
   #   replicas: 1
   #   resources:

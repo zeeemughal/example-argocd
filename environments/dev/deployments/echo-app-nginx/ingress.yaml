@@ -6,8 +6,8 @@ metadata:
   annotations:
     # nginx.ingress.kubernetes.io/ssl-redirect: "false"
     # cert-manager.io/cluster-issuer: "letsencrypt-dev"
-    # external-dns.alpha.kubernetes.io/target: "51.89.191.218"
-    # external-dns.alpha.kubernetes.io/enabled: "true"
+    external-dns.alpha.kubernetes.io/target: "51.89.191.218"
+    external-dns.alpha.kubernetes.io/enabled: "true"
     # external-dns.alpha.kubernetes.io/ttl: "300"
     # external-dns.alpha.kubernetes.io/ingress-hostname-source: "annotation-only"
 
@@ -16,7 +16,7 @@ metadata:
 spec:
   ingressClassName: cloudflare-tunnel
   rules:
-  - host: tunnel-dev.786999.xyz
+  - host: test.dev.786999.xyz
     http:
       paths:
       - path: /
@@ -26,8 +26,8 @@ spec:
             name: echo-app
             port:
               number: 80
-  # tls:
-  #   - hosts:
-  #     - testing.dev.786999.xyz
-  #     secretName: test-tls-lets
+  tls:
+    - hosts:
+      - test.dev.786999.xyz
+      secretName: test-tls-lets
     

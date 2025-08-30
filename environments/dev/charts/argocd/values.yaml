@@ -21,9 +21,9 @@ argo-cd:
         # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
         # External DNS annotations
-        external-dns.alpha.kubernetes.io/hostname: "argocd-dev.786999.xyz"
+        external-dns.alpha.kubernetes.io/hostname: "argocd.dev.786999.xyz"
         external-dns.alpha.kubernetes.io/ttl: "60"
-        # external-dns.alpha.kubernetes.io/ip-address: "51.89.191.218"
+        external-dns.alpha.kubernetes.io/ip-address: "51.89.191.218"
       tls: true
       
   controller:

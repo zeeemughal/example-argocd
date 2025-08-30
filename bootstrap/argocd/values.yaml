@@ -1,5 +1,8 @@
 argo-cd:
   
+  nameOverride: "argocd-dev"
+  fullnameOverride: "argocd-dev"
+  
   configs:
     params:
       server.insecure: true

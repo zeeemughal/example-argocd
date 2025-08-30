@@ -7,6 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
     external-dns.alpha.kubernetes.io/ip-address: "51.89.191.218"
+    external-dns.alpha.kubernetes.io/hostname: "echo.dev.786999.xyz"
+
 
 spec:
   ingressClassName: nginx

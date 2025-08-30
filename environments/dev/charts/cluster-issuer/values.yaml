@@ -10,6 +10,6 @@ letsencrypt:
   
   # Production issuer (disabled in dev)
   prod:
-    enabled: false
+    enabled: true
     name: letsencrypt-prod
     server: https://acme-v02.api.letsencrypt.org/directory

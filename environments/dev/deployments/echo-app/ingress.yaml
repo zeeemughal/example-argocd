@@ -4,10 +4,13 @@ metadata:
   name: echo-app
   namespace: echo-app
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: "letsencrypt-dev"
     external-dns.alpha.kubernetes.io/target: "51.89.191.218"
     external-dns.alpha.kubernetes.io/hostname: "echo.dev.786999.xyz"
+    external-dns.alpha.kubernetes.io/ttl: "300"
+    # external-dns.alpha.kubernetes.io/ingress-hostname-source: "annotation-only"
+
 
 
 spec:
@@ -26,5 +29,5 @@ spec:
   tls:
     - hosts:
       - echo.dev.786999.xyz
-      secretName: echo-app-tls
+      secretName: echo-app-tls-lets
     

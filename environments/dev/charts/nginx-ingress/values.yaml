@@ -28,7 +28,7 @@ ingress-nginx:
           prometheus.io/port: "10254"
     
     admissionWebhooks:
-      enabled: true
+      enabled: false
       
   defaultBackend:
     enabled: true

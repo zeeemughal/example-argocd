@@ -16,11 +16,15 @@ storage:
   type: "pvc"
   pvc:
     create: true
-    name: "media-server-pvc"
+    name: "media-server-pvc-rwx"
     size: "100Gi"
     storageClass: "longhorn"
-    accessModes: ["ReadWriteOnce"]
+    accessModes: ["ReadWriteMany"]
   existingPvc: ""
+
+migration:
+  enabled: true
+  oldPvcName: "media-server-pvc"
 
 ingress:
   enabled: true
@@ -44,7 +48,7 @@ jellyfin:
     image: "alpine:latest"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "100m"
       memory: "512Mi"
@@ -78,7 +82,7 @@ jackett:
     pullPolicy: "IfNotPresent"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "50m"
       memory: "128Mi"
@@ -112,7 +116,7 @@ bazarr:
     pullPolicy: "IfNotPresent"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "50m"
       memory: "128Mi"
@@ -148,7 +152,7 @@ qbittorrent:
     - name: WEBUI_PORT
       value: "32080"
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "100m"
       memory: "256Mi"
@@ -182,7 +186,7 @@ radarr:
     pullPolicy: "IfNotPresent"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "50m"
       memory: "128Mi"
@@ -216,7 +220,7 @@ sonarr:
     pullPolicy: "IfNotPresent"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "50m"
       memory: "128Mi"
@@ -250,7 +254,7 @@ sonarr:
     pullPolicy: "IfNotPresent"
   env: []
   resources:
-    enabled: false
+    enabled: true
     requests:
       cpu: "50m"
       memory: "128Mi"

@@ -1,0 +1,48 @@
+{{- if and .Values.ingress.enabled .Values.jellyfin.enabled .Values.jellyfin.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "media-server.fullname" . }}-jellyfin
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jellyfin
+  annotations:
+    {{- if .Values.ingress.tls.certManager.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.certManager.issuer }}
+    {{- end }}
+    # Jellyfin Performance Optimizations
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.jellyfin.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if and .Values.ingress.tls.enabled .Values.jellyfin.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.jellyfin.ingress.hostname }}
+    secretName: {{ include "media-server.tlsSecretName" .Values.jellyfin.ingress }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.jellyfin.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.jellyfin.ingress.path }}
+        pathType: {{ .Values.jellyfin.ingress.pathType }}
+        backend:
+          service:
+            name: {{ include "media-server.fullname" . }}-jellyfin
+            port:
+              number: {{ .Values.jellyfin.service.port }}
+{{- end }}

@@ -1,0 +1,71 @@
+{{- if .Values.radarr.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "media-server.fullname" . }}-radarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: radarr
+spec:
+  replicas: {{ .Values.radarr.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "media-server.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: radarr
+  template:
+    metadata:
+      labels:
+        {{- include "media-server.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: radarr
+    spec:
+      {{- with .Values.security.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: radarr
+        image: "{{ .Values.radarr.image.repository }}:{{ .Values.radarr.image.tag }}"
+        imagePullPolicy: {{ .Values.radarr.image.pullPolicy }}
+        {{- with .Values.security.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.radarr.service.port }}
+        env:
+        {{- include "media-server.env" . | nindent 8 }}
+        {{- range .Values.radarr.env }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
+        volumeMounts:
+        {{- range $key, $mount := .Values.radarr.volumeMounts }}
+        - name: media-storage
+          mountPath: {{ $mount.mountPath }}
+          {{- if $mount.subPath }}
+          subPath: {{ $mount.subPath }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.radarr.resources.enabled }}
+        resources:
+          {{- with .Values.radarr.resources.requests }}
+          requests:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.radarr.resources.limits }}
+          limits:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
+      volumes:
+      - name: media-storage
+        {{- if eq .Values.storage.type "pvc" }}
+        persistentVolumeClaim:
+          claimName: {{ if .Values.storage.pvc.create }}{{ .Values.storage.pvc.name }}{{ else }}{{ .Values.storage.existingPvc }}{{ end }}
+        {{- else if eq .Values.storage.type "hostPath" }}
+        hostPath:
+          path: {{ .Values.storage.hostPath }}
+        {{- else if eq .Values.storage.type "emptyDir" }}
+        emptyDir: {}
+        {{- end }}
+{{- end }}

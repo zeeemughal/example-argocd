@@ -1,0 +1,93 @@
+{{- if .Values.jellyfin.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "media-server.fullname" . }}-jellyfin
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jellyfin
+spec:
+  replicas: {{ .Values.jellyfin.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "media-server.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: jellyfin
+  template:
+    metadata:
+      labels:
+        {{- include "media-server.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: jellyfin
+    spec:
+      {{- with .Values.security.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.jellyfin.initContainer.enabled }}
+      initContainers:
+      - name: init-media-folders
+        image: {{ .Values.jellyfin.initContainer.image }}
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /media/movies
+          mkdir -p /media/shows
+          mkdir -p /media/books
+          mkdir -p /media/music
+          mkdir -p /media/home-videos
+          mkdir -p /media/music-videos
+          mkdir -p /media/mixed-movies-shows
+          echo "Created media folders:"
+          ls -la /media/
+        volumeMounts:
+        - name: media-storage
+          mountPath: /media
+          subPath: media
+      {{- end }}
+      containers:
+      - name: jellyfin
+        image: "{{ .Values.jellyfin.image.repository }}:{{ .Values.jellyfin.image.tag }}"
+        imagePullPolicy: {{ .Values.jellyfin.image.pullPolicy }}
+        {{- with .Values.security.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.jellyfin.service.port }}
+        env:
+        {{- include "media-server.env" . | nindent 8 }}
+        {{- range .Values.jellyfin.env }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
+        volumeMounts:
+        {{- range $key, $mount := .Values.jellyfin.volumeMounts }}
+        - name: media-storage
+          mountPath: {{ $mount.mountPath }}
+          {{- if $mount.subPath }}
+          subPath: {{ $mount.subPath }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.jellyfin.resources.enabled }}
+        resources:
+          {{- with .Values.jellyfin.resources.requests }}
+          requests:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.jellyfin.resources.limits }}
+          limits:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
+      volumes:
+      - name: media-storage
+        {{- if eq .Values.storage.type "pvc" }}
+        persistentVolumeClaim:
+          claimName: {{ if .Values.storage.pvc.create }}{{ .Values.storage.pvc.name }}{{ else }}{{ .Values.storage.existingPvc }}{{ end }}
+        {{- else if eq .Values.storage.type "hostPath" }}
+        hostPath:
+          path: {{ .Values.storage.hostPath }}
+        {{- else if eq .Values.storage.type "emptyDir" }}
+        emptyDir: {}
+        {{- end }}
+{{- end }}

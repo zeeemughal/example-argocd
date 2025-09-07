@@ -1,0 +1,99 @@
+{{- if .Values.jellyfin.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-jellyfin
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jellyfin
+spec:
+  type: {{ .Values.jellyfin.service.type }}
+  ports:
+  - port: {{ .Values.jellyfin.service.port }}
+    targetPort: {{ .Values.jellyfin.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: jellyfin
+---
+{{- end }}
+{{- if .Values.jackett.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-jackett
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jackett
+spec:
+  type: {{ .Values.jackett.service.type }}
+  ports:
+  - port: {{ .Values.jackett.service.port }}
+    targetPort: {{ .Values.jackett.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: jackett
+---
+{{- end }}
+{{- if .Values.bazarr.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-bazarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: bazarr
+spec:
+  type: {{ .Values.bazarr.service.type }}
+  ports:
+  - port: {{ .Values.bazarr.service.port }}
+    targetPort: {{ .Values.bazarr.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: bazarr
+---
+{{- end }}
+{{- if .Values.qbittorrent.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-qbittorrent
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: qbittorrent
+spec:
+  type: {{ .Values.qbittorrent.service.type }}
+  ports:
+  - port: {{ .Values.qbittorrent.service.port }}
+    targetPort: {{ .Values.qbittorrent.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: qbittorrent
+---
+{{- end }}
+{{- if .Values.radarr.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-radarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: radarr
+spec:
+  type: {{ .Values.radarr.service.type }}
+  ports:
+  - port: {{ .Values.radarr.service.port }}
+    targetPort: {{ .Values.radarr.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: radarr
+{{- end }}

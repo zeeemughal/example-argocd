@@ -1,0 +1,6 @@
+apiVersion: v2
+name: media-server
+description: Professional media server stack with Jellyfin, Jackett, Bazarr, qBittorrent, and Radarr
+type: application
+version: 1.0.0
+appVersion: "latest"

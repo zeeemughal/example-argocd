@@ -1,0 +1,40 @@
+{{- if and .Values.ingress.enabled .Values.jackett.enabled .Values.jackett.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "media-server.fullname" . }}-jackett
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jackett
+  annotations:
+    {{- if .Values.ingress.tls.certManager.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.certManager.issuer }}
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.jackett.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if and .Values.ingress.tls.enabled .Values.jackett.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.jackett.ingress.hostname }}
+    secretName: {{ include "media-server.tlsSecretName" .Values.jackett.ingress }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.jackett.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.jackett.ingress.path }}
+        pathType: {{ .Values.jackett.ingress.pathType }}
+        backend:
+          service:
+            name: {{ include "media-server.fullname" . }}-jackett
+            port:
+              number: {{ .Values.jackett.service.port }}
+{{- end }}

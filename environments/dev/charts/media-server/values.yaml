@@ -1,0 +1,213 @@
+global:
+  timezone: "Etc/UTC"
+  puid: 1000
+  pgid: 1000
+  umask: "002"
+
+defaultEnv:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "Etc/UTC"
+  UMASK: "002"
+
+additionalEnv: []
+
+storage:
+  type: "pvc"
+  pvc:
+    create: true
+    name: "media-server-pvc"
+    size: "100Gi"
+    storageClass: "longhorn"
+    accessModes: ["ReadWriteOnce"]
+  existingPvc: ""
+
+ingress:
+  enabled: true
+  className: "nginx"
+  tls:
+    enabled: true
+    certManager:
+      enabled: true
+      issuer: "letsencrypt-prod"
+  annotations:
+    external-dns.alpha.kubernetes.io/enabled: "true"
+
+jellyfin:
+  enabled: true
+  image:
+    repository: "linuxserver/jellyfin"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  initContainer:
+    enabled: true
+    image: "alpine:latest"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "2000m"
+      memory: "4Gi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/jf"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 8096
+  ingress:
+    enabled: true
+    hostname: "jellyfin.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+jackett:
+  enabled: true
+  image:
+    repository: "linuxserver/jackett"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/jackett"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 9117
+  ingress:
+    enabled: true
+    hostname: "jackett.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+bazarr:
+  enabled: true
+  image:
+    repository: "linuxserver/bazarr"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/bazarr"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 6767
+  ingress:
+    enabled: true
+    hostname: "bazarr.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+qbittorrent:
+  enabled: true
+  image:
+    repository: "linuxserver/qbittorrent"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env:
+    - name: WEBUI_PORT
+      value: "32080"
+  resources:
+    enabled: false
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/qb"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 32080
+  ingress:
+    enabled: true
+    hostname: "qbittorrent.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+radarr:
+  enabled: true
+  image:
+    repository: "ghcr.io/hotio/radarr"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/radarr"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 7878
+  ingress:
+    enabled: true
+    hostname: "radarr.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+security:
+  podSecurityContext: {}
+  securityContext: {}

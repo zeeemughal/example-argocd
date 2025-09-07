@@ -19,6 +19,7 @@ resources:
   - deployments/echo-app/pipeline/application.yaml
   - deployments/echo-app-nginx/pipeline/application.yaml
   - deployments/external-secret-test/pipeline/application.yaml
+  - charts/media-server/pipeline/application.yaml
   
   # Main pipeline self-reference
   - main-pipeline-app.yaml

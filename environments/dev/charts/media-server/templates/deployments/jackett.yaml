@@ -1,0 +1,71 @@
+{{- if .Values.jackett.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "media-server.fullname" . }}-jackett
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: jackett
+spec:
+  replicas: {{ .Values.jackett.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "media-server.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: jackett
+  template:
+    metadata:
+      labels:
+        {{- include "media-server.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: jackett
+    spec:
+      {{- with .Values.security.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: jackett
+        image: "{{ .Values.jackett.image.repository }}:{{ .Values.jackett.image.tag }}"
+        imagePullPolicy: {{ .Values.jackett.image.pullPolicy }}
+        {{- with .Values.security.securityContext }}
+        securityContext:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.jackett.service.port }}
+        env:
+        {{- include "media-server.env" . | nindent 8 }}
+        {{- range .Values.jackett.env }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
+        volumeMounts:
+        {{- range $key, $mount := .Values.jackett.volumeMounts }}
+        - name: media-storage
+          mountPath: {{ $mount.mountPath }}
+          {{- if $mount.subPath }}
+          subPath: {{ $mount.subPath }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.jackett.resources.enabled }}
+        resources:
+          {{- with .Values.jackett.resources.requests }}
+          requests:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.jackett.resources.limits }}
+          limits:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
+      volumes:
+      - name: media-storage
+        {{- if eq .Values.storage.type "pvc" }}
+        persistentVolumeClaim:
+          claimName: {{ if .Values.storage.pvc.create }}{{ .Values.storage.pvc.name }}{{ else }}{{ .Values.storage.existingPvc }}{{ end }}
+        {{- else if eq .Values.storage.type "hostPath" }}
+        hostPath:
+          path: {{ .Values.storage.hostPath }}
+        {{- else if eq .Values.storage.type "emptyDir" }}
+        emptyDir: {}
+        {{- end }}
+{{- end }}

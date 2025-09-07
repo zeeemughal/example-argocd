@@ -1,0 +1,40 @@
+{{- if and .Values.ingress.enabled .Values.bazarr.enabled .Values.bazarr.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "media-server.fullname" . }}-bazarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: bazarr
+  annotations:
+    {{- if .Values.ingress.tls.certManager.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.certManager.issuer }}
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.bazarr.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if and .Values.ingress.tls.enabled .Values.bazarr.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.bazarr.ingress.hostname }}
+    secretName: {{ include "media-server.tlsSecretName" .Values.bazarr.ingress }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.bazarr.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.bazarr.ingress.path }}
+        pathType: {{ .Values.bazarr.ingress.pathType }}
+        backend:
+          service:
+            name: {{ include "media-server.fullname" . }}-bazarr
+            port:
+              number: {{ .Values.bazarr.service.port }}
+{{- end }}

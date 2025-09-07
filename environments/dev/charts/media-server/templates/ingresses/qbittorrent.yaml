@@ -1,0 +1,43 @@
+{{- if and .Values.ingress.enabled .Values.qbittorrent.enabled .Values.qbittorrent.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "media-server.fullname" . }}-qbittorrent
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: qbittorrent
+  annotations:
+    {{- if .Values.ingress.tls.certManager.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.certManager.issuer }}
+    {{- end }}
+    # qBittorrent Optimizations
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.qbittorrent.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if and .Values.ingress.tls.enabled .Values.qbittorrent.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.qbittorrent.ingress.hostname }}
+    secretName: {{ include "media-server.tlsSecretName" .Values.qbittorrent.ingress }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.qbittorrent.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.qbittorrent.ingress.path }}
+        pathType: {{ .Values.qbittorrent.ingress.pathType }}
+        backend:
+          service:
+            name: {{ include "media-server.fullname" . }}-qbittorrent
+            port:
+              number: {{ .Values.qbittorrent.service.port }}
+{{- end }}

@@ -1,0 +1,72 @@
+longhorn:
+  # Default settings for Longhorn
+  defaultSettings:
+    # Use local-path storage class for Longhorn PVCs
+    defaultDataPath: /var/lib/longhorn/
+    createDefaultDiskLabeledNodes: true
+    defaultDataLocality: best-effort
+    replicaSoftAntiAffinity: true
+    storageOverProvisioningPercentage: 200
+    storageMinimalAvailablePercentage: 10
+    defaultReplicaCount: 1
+    defaultLonghornStaticStorageClass: local-path
+    backupstorePollInterval: 300
+    taintToleration: ""
+    systemManagedComponentsNodeSelector: "kubernetes.io/os:linux"
+    priorityClass: ""
+    autoSalvage: true
+    disableSchedulingOnCordonedNode: true
+    replicaZoneSoftAntiAffinity: true
+    nodeDownPodDeletionPolicy: do-nothing
+    allowNodeDrainWithLastHealthyReplica: false
+    mkfsExt4Parameters: ""
+    disableReplicaRebuild: false
+    replicaReplenishmentWaitInterval: 600
+    concurrentReplicaRebuildPerNodeLimit: 5
+    disableRevisionCounter: false
+    systemManagedPodsImagePullPolicy: if-not-present
+    allowVolumeCreationWithDegradedAvailability: true
+    autoDeletePodWhenVolumeDetachedUnexpectedly: true
+    storageNetwork: ""
+    kubernetesClusterAutoscalerEnabled: false
+    orphanAutoDeletion: false
+    storageReservedPercentageForDefaultDisk: 30
+    upgradeChecker: true
+    defaultDataLocalityPolicy: best-effort
+    fastReplicaRebuildEnabled: false
+    replicaDiskSoftAntiAffinity: true
+    allowCollectingLonghornUsageMetrics: true
+    backingImageCleanupWaitInterval: 60
+    backingImageRecoveryWaitInterval: 300
+    guaranteedInstanceManagerCPU: 12
+
+  # Enable persistence for Longhorn manager
+  persistence:
+    defaultClass: true
+    defaultClassReplicaCount: 3
+    reclaimPolicy: Delete
+
+  # Configure Longhorn UI ingress
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    host: longhorn.dev.786999.xyz
+    tls: true
+    tlsSecret: longhorn-tls-lets
+    annotations:
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      external-dns.alpha.kubernetes.io/enabled: "true"
+
+  # Resource settings
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Service settings
+  service:
+    ui:
+      type: ClusterIP

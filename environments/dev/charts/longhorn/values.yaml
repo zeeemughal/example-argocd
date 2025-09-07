@@ -16,9 +16,11 @@ longhorn:
     defaultDataPath: /var/lib/longhorn/
     createDefaultDiskLabeledNodes: true
     defaultDataLocality: best-effort
-    replicaSoftAntiAffinity: true
+    # Single node cluster settings (for multi-node: set to 3 and enable anti-affinity)
+    replicaSoftAntiAffinity: false  # Enable for multi-node clusters
     storageOverProvisioningPercentage: 200
     storageMinimalAvailablePercentage: 10
+    # Single node cluster: 1 replica (for multi-node: set to 3)
     defaultReplicaCount: 1
     backupstorePollInterval: 300
     taintToleration: ""
@@ -27,7 +29,7 @@ longhorn:
     priorityClass: ""
     autoSalvage: true
     disableSchedulingOnCordonedNode: true
-    replicaZoneSoftAntiAffinity: true
+    replicaZoneSoftAntiAffinity: false  # Enable for multi-zone clusters
     nodeDownPodDeletionPolicy: do-nothing
     allowNodeDrainWithLastHealthyReplica: false
     mkfsExt4Parameters: ""
@@ -44,7 +46,7 @@ longhorn:
     storageReservedPercentageForDefaultDisk: 30
     defaultDataLocalityPolicy: best-effort
     fastReplicaRebuildEnabled: false
-    replicaDiskSoftAntiAffinity: true
+    replicaDiskSoftAntiAffinity: false  # Enable for multi-node clusters
     allowCollectingLonghornUsageMetrics: true
     backingImageCleanupWaitInterval: 60
     backingImageRecoveryWaitInterval: 300
@@ -55,10 +57,16 @@ longhorn:
   # Enable persistence for Longhorn manager
   persistence:
     defaultClass: true
-    defaultClassReplicaCount: 3
+    # Single node cluster: 1 replica (for multi-node: set to 3)
+    defaultClassReplicaCount: 1
     reclaimPolicy: Delete
 
-  # Configure Longhorn UI ingress
+  # Enable authentication for Longhorn UI (basic auth)
+  # Create secret: kubectl create secret generic basic-auth --from-literal=auth=$(htpasswd -nb admin <password>) -n longhorn-system
+  longhornUI:
+    replicas: 1  # Single node cluster (for multi-node: set to 2)
+  
+  # Basic auth configuration
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -68,6 +76,10 @@ longhorn:
     annotations:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
       external-dns.alpha.kubernetes.io/enabled: "true"
+      # Basic auth annotations
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: basic-auth
+      nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - Longhorn'
 
   # Resource settings
   resources:

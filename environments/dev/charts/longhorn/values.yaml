@@ -1,5 +1,10 @@
 longhorn:
   # CSI components will use default values from the Longhorn chart
+  
+  # Service account configuration
+  serviceAccount:
+    create: true
+    name: longhorn-service-account
 
   # Default settings for Longhorn
   defaultSettings:

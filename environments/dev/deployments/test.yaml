@@ -1,0 +1,29 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: external-dns-secrets
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: bitwarden-secrets-manager
+  target:
+    name: external-dns-credentials
+    creationPolicy: Owner
+  data:
+  - secretKey: CF_API_TOKEN
+    remoteRef:
+      key: CF_JSON_SECRET
+      property: CF_API_TOKEN
+      decodingStrategy: JSON
+  - secretKey: CF_API_EMAIL
+    remoteRef:
+      key: CF_JSON_SECRET
+      property: CF_API_EMAIL
+      decodingStrategy: JSON
+  - secretKey: CF_ZONE_ID
+    remoteRef:
+      key: CF_JSON_SECRET
+      property: CF_ZONE_ID
+      decodingStrategy: JSON
+

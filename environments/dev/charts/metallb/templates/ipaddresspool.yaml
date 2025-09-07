@@ -1,8 +1,20 @@
+{{- range .Values.config.addressPools }}
+{{- if .enabled }}
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: default-pool
-  namespace: {{ .Release.Namespace }}
+  name: {{ .name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
   addresses:
-  - 10.51.1.171-10.51.1.175
+  {{- range .addresses }}
+  - {{ . }}
+  {{- end }}
+  {{- if hasKey . "autoAssign" }}
+  autoAssign: {{ .autoAssign }}
+  {{- end }}
+  {{- if hasKey . "avoidBuggyIPs" }}
+  avoidBuggyIPs: {{ .avoidBuggyIPs }}
+  {{- end }}
+{{- end }}
+{{- end }}

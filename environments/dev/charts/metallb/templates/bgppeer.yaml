@@ -1,0 +1,11 @@
+{{- if and (eq .Values.config.advertisementMode "bgp") (hasKey .Values.config "bgp") }}
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: default-bgppeer
+  namespace: {{ .Release.Namespace }}
+spec:
+  myASN: {{ .Values.config.bgp.myASN }}
+  peerASN: {{ .Values.config.bgp.peerASN }}
+  peerAddress: {{ .Values.config.bgp.peerAddress }}
+{{- end }}

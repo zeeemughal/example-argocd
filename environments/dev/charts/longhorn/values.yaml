@@ -6,6 +6,10 @@ longhorn:
     create: true
     name: longhorn-service-account
 
+  # Disable pre-upgrade jobs
+  preUpgradeChecker:
+    jobEnabled: false
+  
   # Default settings for Longhorn
   defaultSettings:
     # Use local-path storage class for Longhorn PVCs

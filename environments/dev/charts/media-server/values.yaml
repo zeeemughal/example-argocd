@@ -26,9 +26,9 @@ ingress:
   enabled: true
   className: "nginx"
   tls:
-    enabled: false
+    enabled: true
     certManager:
-      enabled: false
+      enabled: true
       issuer: "letsencrypt-prod"
   annotations:
     external-dns.alpha.kubernetes.io/enabled: "true"
@@ -40,7 +40,7 @@ jellyfin:
     tag: "latest"
     pullPolicy: "IfNotPresent"
   initContainer:
-    enabled: false
+    enabled: true
     image: "alpine:latest"
   env: []
   resources:
@@ -67,7 +67,7 @@ jellyfin:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 jackett:
@@ -101,7 +101,7 @@ jackett:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 bazarr:
@@ -135,7 +135,7 @@ bazarr:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 qbittorrent:
@@ -171,7 +171,7 @@ qbittorrent:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 radarr:
@@ -205,7 +205,7 @@ radarr:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 sonarr:
@@ -239,7 +239,7 @@ sonarr:
     path: "/"
     pathType: "Prefix"
     tls:
-      enabled: false
+      enabled: true
     annotations: {}
 
 security:

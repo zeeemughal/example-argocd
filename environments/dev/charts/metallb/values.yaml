@@ -7,7 +7,7 @@ metallb:
 # MetalLB Configuration
 config:
   # Advertisement mode: l2 or bgp
-  advertisementMode: "l2"
+  advertisementMode: "bgp"
   
   # IP Address Pools
   addressPools:
@@ -15,7 +15,7 @@ config:
       enabled: true
       # IP address ranges (can be IPv4 or IPv6)
       addresses:
-        - 10.51.1.171-10.51.1.175
+        - 51.89.191.218/32
         # Uncomment for additional ranges
         # - 192.168.1.240/28
         # - 2001:db8::/64  # IPv6 example
@@ -28,7 +28,7 @@ config:
   
   # BGP Configuration (only used when advertisementMode is set to "bgp")
   # Uncomment and configure these settings only when using BGP mode
-  # bgp:
-  #   myASN: 65001
-  #   peerASN: 65000
-  #   peerAddress: 192.168.1.1
+  bgp:
+    myASN: 64514
+    peerASN: 64513
+    peerAddress: 10.51.1.254

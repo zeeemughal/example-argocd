@@ -37,12 +37,16 @@ spec:
           mkdir -p /media/home-videos
           mkdir -p /media/music-videos
           mkdir -p /media/mixed-movies-shows
-          echo "Created media folders:"
+          chown -R 1000:1000 /media
+          chmod -R 775 /media
+          echo "Media folders initialized with proper ownership (1000:1000)"
           ls -la /media/
         volumeMounts:
         - name: media-storage
           mountPath: /media
           subPath: media
+        securityContext:
+          runAsUser: 0
       {{- end }}
       containers:
       - name: jellyfin

@@ -15,16 +15,12 @@ additionalEnv: []
 storage:
   type: "pvc"
   pvc:
-    create: true
+    create: false
     name: "media-server-pvc-rwx"
     size: "100Gi"
     storageClass: "longhorn"
     accessModes: ["ReadWriteMany"]
-  existingPvc: ""
-
-migration:
-  enabled: false
-  oldPvcName: "media-server-pvc"
+  existingPvc: "media-server-pvc-rwx"
 
 ingress:
   enabled: false

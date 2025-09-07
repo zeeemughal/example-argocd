@@ -23,7 +23,7 @@ storage:
   existingPvc: "media-server-pvc-rwx"
 
 ingress:
-  enabled: false
+  enabled: true
   className: "nginx"
   tls:
     enabled: false
@@ -34,7 +34,7 @@ ingress:
     external-dns.alpha.kubernetes.io/enabled: "true"
 
 jellyfin:
-  enabled: false
+  enabled: true
   image:
     repository: "linuxserver/jellyfin"
     tag: "latest"
@@ -62,7 +62,7 @@ jellyfin:
     type: "ClusterIP"
     port: 8096
   ingress:
-    enabled: false
+    enabled: true
     hostname: "jellyfin.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"
@@ -71,7 +71,7 @@ jellyfin:
     annotations: {}
 
 jackett:
-  enabled: false
+  enabled: true
   image:
     repository: "linuxserver/jackett"
     tag: "latest"
@@ -96,7 +96,7 @@ jackett:
     type: "ClusterIP"
     port: 9117
   ingress:
-    enabled: false
+    enabled: true
     hostname: "jackett.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"
@@ -105,7 +105,7 @@ jackett:
     annotations: {}
 
 bazarr:
-  enabled: false
+  enabled: true
   image:
     repository: "linuxserver/bazarr"
     tag: "latest"
@@ -130,7 +130,7 @@ bazarr:
     type: "ClusterIP"
     port: 6767
   ingress:
-    enabled: false
+    enabled: true
     hostname: "bazarr.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"
@@ -139,7 +139,7 @@ bazarr:
     annotations: {}
 
 qbittorrent:
-  enabled: false
+  enabled: true
   image:
     repository: "linuxserver/qbittorrent"
     tag: "latest"
@@ -166,7 +166,7 @@ qbittorrent:
     type: "ClusterIP"
     port: 32080
   ingress:
-    enabled: false
+    enabled: true
     hostname: "qbittorrent.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"
@@ -175,7 +175,7 @@ qbittorrent:
     annotations: {}
 
 radarr:
-  enabled: false
+  enabled: true
   image:
     repository: "ghcr.io/hotio/radarr"
     tag: "latest"
@@ -200,7 +200,7 @@ radarr:
     type: "ClusterIP"
     port: 7878
   ingress:
-    enabled: false
+    enabled: true
     hostname: "radarr.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"
@@ -209,7 +209,7 @@ radarr:
     annotations: {}
 
 sonarr:
-  enabled: false
+  enabled: true
   image:
     repository: "linuxserver/sonarr"
     tag: "latest"
@@ -234,41 +234,7 @@ sonarr:
     type: "ClusterIP"
     port: 8989
   ingress:
-    enabled: false
-    hostname: "sonarr.dev.786999.xyz"
-    path: "/"
-    pathType: "Prefix"
-    tls:
-      enabled: false
-    annotations: {}
-
-sonarr:
-  enabled: false
-  image:
-    repository: "linuxserver/sonarr"
-    tag: "latest"
-    pullPolicy: "IfNotPresent"
-  env: []
-  resources:
-    enabled: false
-    requests:
-      cpu: "50m"
-      memory: "128Mi"
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
-  volumeMounts:
-    config:
-      mountPath: "/config"
-      subPath: "config/sonarr"
-    media:
-      mountPath: "/media"
-      subPath: "media"
-  service:
-    type: "ClusterIP"
-    port: 8989
-  ingress:
-    enabled: false
+    enabled: true
     hostname: "sonarr.dev.786999.xyz"
     path: "/"
     pathType: "Prefix"

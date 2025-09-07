@@ -3,6 +3,13 @@ kind: Application
 metadata:
   name: longhorn-dev
   namespace: argocd
+  annotations:
+    # Sync wave controls deployment order (lower numbers first)
+    # Wave 0: Core infrastructure (networking, storage)
+    # Wave 1: Critical services (ingress controllers, cert-manager)
+    # Wave 2: Storage solutions (Longhorn)
+    # Wave 3+: Application workloads
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:

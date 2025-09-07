@@ -1,4 +1,6 @@
 longhorn:
+  # CSI components will use default values from the Longhorn chart
+
   # Default settings for Longhorn
   defaultSettings:
     # Use local-path storage class for Longhorn PVCs
@@ -9,10 +11,10 @@ longhorn:
     storageOverProvisioningPercentage: 200
     storageMinimalAvailablePercentage: 10
     defaultReplicaCount: 1
-    defaultLonghornStaticStorageClass: local-path
     backupstorePollInterval: 300
     taintToleration: ""
     systemManagedComponentsNodeSelector: "kubernetes.io/os:linux"
+    
     priorityClass: ""
     autoSalvage: true
     disableSchedulingOnCordonedNode: true
@@ -31,7 +33,6 @@ longhorn:
     kubernetesClusterAutoscalerEnabled: false
     orphanAutoDeletion: false
     storageReservedPercentageForDefaultDisk: 30
-    upgradeChecker: true
     defaultDataLocalityPolicy: best-effort
     fastReplicaRebuildEnabled: false
     replicaDiskSoftAntiAffinity: true
@@ -39,6 +40,8 @@ longhorn:
     backingImageCleanupWaitInterval: 60
     backingImageRecoveryWaitInterval: 300
     guaranteedInstanceManagerCPU: 12
+    # Disable upgrade checker to prevent pre-upgrade issues
+    upgradeChecker: false
 
   # Enable persistence for Longhorn manager
   persistence:

@@ -96,4 +96,24 @@ spec:
   selector:
     {{- include "media-server.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: radarr
+---
+{{- end }}
+{{- if .Values.sonarr.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "media-server.fullname" . }}-sonarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: sonarr
+spec:
+  type: {{ .Values.sonarr.service.type }}
+  ports:
+  - port: {{ .Values.sonarr.service.port }}
+    targetPort: {{ .Values.sonarr.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    {{- include "media-server.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: sonarr
 {{- end }}

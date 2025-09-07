@@ -1,0 +1,40 @@
+{{- if and .Values.ingress.enabled .Values.sonarr.enabled .Values.sonarr.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "media-server.fullname" . }}-sonarr
+  labels:
+    {{- include "media-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: sonarr
+  annotations:
+    {{- if .Values.ingress.tls.certManager.enabled }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.tls.certManager.issuer }}
+    {{- end }}
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.sonarr.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if and .Values.ingress.tls.enabled .Values.sonarr.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ .Values.sonarr.ingress.hostname }}
+    secretName: {{ include "media-server.tlsSecretName" .Values.sonarr.ingress }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.sonarr.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.sonarr.ingress.path }}
+        pathType: {{ .Values.sonarr.ingress.pathType }}
+        backend:
+          service:
+            name: {{ include "media-server.fullname" . }}-sonarr
+            port:
+              number: {{ .Values.sonarr.service.port }}
+{{- end }}

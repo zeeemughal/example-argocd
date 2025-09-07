@@ -208,6 +208,74 @@ radarr:
       enabled: true
     annotations: {}
 
+sonarr:
+  enabled: true
+  image:
+    repository: "linuxserver/sonarr"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/sonarr"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 8989
+  ingress:
+    enabled: true
+    hostname: "sonarr.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
+sonarr:
+  enabled: true
+  image:
+    repository: "linuxserver/sonarr"
+    tag: "latest"
+    pullPolicy: "IfNotPresent"
+  env: []
+  resources:
+    enabled: false
+    requests:
+      cpu: "50m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  volumeMounts:
+    config:
+      mountPath: "/config"
+      subPath: "config/sonarr"
+    media:
+      mountPath: "/media"
+      subPath: "media"
+  service:
+    type: "ClusterIP"
+    port: 8989
+  ingress:
+    enabled: true
+    hostname: "sonarr.dev.786999.xyz"
+    path: "/"
+    pathType: "Prefix"
+    tls:
+      enabled: true
+    annotations: {}
+
 security:
   podSecurityContext: {}
   securityContext: {}

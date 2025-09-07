@@ -11,8 +11,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-repo/argocd-bootstrap
-    targetRevision: HEAD
+    repoURL: https://github.com/zeeemughal/example-argocd.git
+    targetRevision: testing
     path: environments/dev/charts/media-server
     helm:
       releaseName: media-server

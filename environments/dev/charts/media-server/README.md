@@ -120,6 +120,89 @@ jellyfin:
   kubectl logs <qbittorrent-pod> -n media-server | grep password
   ```
 
+## Service Integration
+
+### Internal Cluster URLs
+Use these URLs to connect services within the Kubernetes cluster:
+
+```yaml
+# Jackett (Indexer)
+jackett_url: "http://media-server-jackett.media-server.svc.cluster.local:9117"
+
+# qBittorrent (Download Client)  
+qbittorrent_url: "http://media-server-qbittorrent.media-server.svc.cluster.local:32080"
+
+# Jellyfin (Media Server)
+jellyfin_url: "http://media-server-jellyfin.media-server.svc.cluster.local:8096"
+```
+
+### Configuration Steps
+
+#### 1. Configure Jackett
+1. Access Jackett via `https://jackett.dev.786999.xyz`
+2. Add your torrent indexers
+3. Copy the Torznab feed URLs for use in Radarr/Sonarr
+
+#### 2. Configure qBittorrent
+1. Access qBittorrent via `https://qbittorrent.dev.786999.xyz`
+2. Set permanent password in Tools → Options → Web UI
+3. Configure download paths:
+   - Movies: `/media/movies`
+   - TV Shows: `/media/shows`
+
+#### 3. Configure Radarr (Movies)
+1. Access Radarr via `https://radarr.dev.786999.xyz`
+2. **Add Download Client**:
+   - Settings → Download Clients → Add qBittorrent
+   - Host: `media-server-qbittorrent.media-server.svc.cluster.local`
+   - Port: `32080`
+   - Category: `movies`
+3. **Add Indexers**:
+   - Settings → Indexers → Add Torznab
+   - URL: `http://media-server-jackett.media-server.svc.cluster.local:9117/api/v2.0/indexers/[indexer]/results/torznab/`
+   - API Key: (from Jackett)
+
+#### 4. Configure Sonarr (TV Shows)
+1. Access Sonarr via `https://sonarr.dev.786999.xyz`
+2. **Add Download Client**:
+   - Settings → Download Clients → Add qBittorrent
+   - Host: `media-server-qbittorrent.media-server.svc.cluster.local`
+   - Port: `32080`
+   - Category: `tv`
+3. **Add Indexers**: Same as Radarr but for TV shows
+
+#### 5. Configure Bazarr (Subtitles)
+1. Access Bazarr via `https://bazarr.dev.786999.xyz`
+2. **Connect to Radarr**:
+   - Settings → Radarr → Enable
+   - Address: `http://media-server-radarr.media-server.svc.cluster.local:7878`
+   - API Key: (from Radarr Settings → General)
+3. **Connect to Sonarr**:
+   - Settings → Sonarr → Enable  
+   - Address: `http://media-server-sonarr.media-server.svc.cluster.local:8989`
+   - API Key: (from Sonarr Settings → General)
+
+#### 6. Configure Jellyfin
+1. Access Jellyfin via `https://jellyfin.dev.786999.xyz`
+2. **Add Media Libraries**:
+   - Movies: `/media/movies`
+   - TV Shows: `/media/shows`
+   - Music: `/media/music`
+   - Books: `/media/books`
+
+### Media Folder Structure
+The init container automatically creates these folders:
+```
+/media/
+├── movies/          # Radarr managed
+├── shows/           # Sonarr managed  
+├── music/           # Music library
+├── books/           # Book library
+├── home-videos/     # Personal videos
+├── music-videos/    # Music videos
+└── mixed-movies-shows/ # Mixed content
+```
+
 ## Monitoring
 
 Check deployment status:

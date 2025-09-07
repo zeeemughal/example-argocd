@@ -10,11 +10,13 @@ longhorn:
   preUpgradeChecker:
     jobEnabled: false
   
-  # Default settings for Longhorn
+  # Default disk configuration for nodes
   defaultSettings:
     # Use local-path storage class for Longhorn PVCs
     defaultDataPath: /var/lib/longhorn/
     createDefaultDiskLabeledNodes: true
+    # Force creation of default disk on all nodes
+    createDefaultDiskOnLabeledNodes: true
     defaultDataLocality: best-effort
     # Single node cluster settings (for multi-node: set to 3 and enable anti-affinity)
     replicaSoftAntiAffinity: false  # Enable for multi-node clusters

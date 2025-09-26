@@ -1,0 +1,61 @@
+ grafana: 
+  # Test environment Grafana configuration
+  admin:
+    existingSecret: "grafana-credentials"
+    userKey: adminUser
+    passwordKey: adminPassword
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  # ALB Ingress configuration
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      # alb.ingress.kubernetes.io/scheme: internet-facing
+      # alb.ingress.kubernetes.io/target-type: ip
+      # alb.ingress.kubernetes.io/load-balancer-name: evh-eh-ue2-obs-alb-argocd
+      # alb.ingress.kubernetes.io/group.name: public
+      # alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+      # alb.ingress.kubernetes.io/ssl-redirect: "443"
+      # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:307697552888:certificate/2d97797f-83b2-45ee-9658-f0270125354a
+      external-dns.alpha.kubernetes.io/enabled: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    hosts:
+      - grafana-test.dev.786999.xyz
+      # - grafana-test.telemetry.everhealth.dev
+    paths:
+      - path: /
+        pathType: Prefix
+
+  # Use emptyDir for testing (data will be lost on pod restart)
+  persistence:
+    enabled: false
+
+  # Test environment resource limits (smaller than production)
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  # Security context
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 472
+    fsGroup: 472
+
+  # Basic datasources configuration
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server.monitoring.svc.cluster.local
+        access: proxy
+        isDefault: true

@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+    volumes:
+      - ./config/jf:/config
+      - ./media:/media
+    ports:
+      - "8096:8096"
+    restart: unless-stopped
+
+  jackett:
+    image: linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+    volumes:
+      - ./config/jackett:/config
+      - ./media:/media
+    ports:
+      - "9117:9117"
+    restart: unless-stopped
+
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+    volumes:
+      - ./config/bazarr:/config
+      - ./media:/media
+    ports:
+      - "6767:6767"
+    restart: unless-stopped
+
+  qbittorrent:
+    image: linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+      - WEBUI_PORT=32080
+    volumes:
+      - ./config/qb:/config
+      - ./media:/media
+    ports:
+      - "32080:32080"
+    restart: unless-stopped
+
+  radarr:
+    image: ghcr.io/hotio/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+    volumes:
+      - ./config/radarr:/config
+      - ./media:/media
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - UMASK=002
+    volumes:
+      - ./config/sonarr:/config
+      - ./media:/media
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: media-server

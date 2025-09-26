@@ -11,6 +11,7 @@ resources:
   - charts/external-dns/pipeline/application.yaml
   - charts/cloudflare-tunnel-ingress-controller/pipeline/application.yaml
   - charts/longhorn/pipeline/application.yaml
+  - charts/grafana/pipeline/application.yaml
   
   # ArgoCD self-management (Wave 2)
   - charts/argocd/pipeline/application.yaml
